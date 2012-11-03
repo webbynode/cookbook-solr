@@ -54,8 +54,15 @@ execute "extract_solr" do
     cp dist/solrj-lib/*.jar /usr/share/tomcat6/lib
     cp contrib/extraction/lib/* /usr/share/tomcat6/lib
 
-    if [ ! -d /var/lib/tomcat6/webapps/solr/WEB-INF/lib ]; then
-      sleep 5
+    attempt=1
+    until [ -d /var/lib/tomcat6/webapps/solr/WEB-INF/lib ] || [ $attempt -gt 30 ]; do
+      sleep 1
+      attempt=$(( $attempt + 1 ))
+    done
+
+    if [ $attempt -gt 30 ]; then
+      echo "solr tomcat application didn't appear after 30s, failing."
+      exit 1
     fi
 
     cp dist/*.jar /var/lib/tomcat6/webapps/solr/WEB-INF/lib
