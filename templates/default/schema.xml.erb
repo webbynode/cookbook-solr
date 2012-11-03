@@ -105,6 +105,14 @@
    <field name="features" type="text_general" indexed="true" stored="true" multiValued="true"/>
    <field name="includes" type="text_general" indexed="true" stored="true" termVectors="true" termPositions="true" termOffsets="true" />
 
+   <field name="doc_type" type="text_general" indexed="true" stored="true"/>
+
+   <field name="business_name" type="text_general" indexed="true" stored="true"/>
+   <field name="contact_instructions" type="text_general" indexed="true" stored="true"/>
+   <field name="project_name" type="text_general" indexed="true" stored="true"/>
+   <field name="project_description" type="text_general" indexed="true" stored="true"/>
+   <field name="assigned_to" type="text_general" indexed="true" stored="true"/>
+
    <field name="file_type" type="text_general" indexed="true" stored="true"/>
    <field name="source_url" type="text_general" indexed="true" stored="true"/>
    <field name="source_name" type="text_general" indexed="true" stored="true"/>
@@ -147,12 +155,11 @@
         NOTE: This field is not indexed by default, since it is also copied to "text"
         using copyField below. This is to save space. Use this field for returning and
         highlighting document content. Use the "text" field to search the content. -->
-   <field name="content" type="text_general" indexed="false" stored="true" multiValued="true"/>
-   
+   <field name="content" type="text_general" indexed="true" stored="true" multiValued="true" termVectors="true" termPositions="true" termOffsets="true"/>
 
    <!-- catchall field, containing all other searchable text fields (implemented
         via copyField further on in this schema  -->
-   <field name="text" type="text_general" indexed="true" stored="false" multiValued="true"/>
+   <field name="text" type="text_general" indexed="true" stored="false" multiValued="true" termVectors="true" termPositions="true" termOffsets="true"/>
 
    <!-- catchall text field that indexes tokens both normally and in reverse for efficient
         leading wildcard queries. -->
@@ -260,12 +267,22 @@
    <!-- Copy the price into a currency enabled field (default USD) -->
    <copyField source="price" dest="price_c"/>
 
+   <copyField source="file_type" dest="text"/>
+   <copyField source="source_url" dest="text"/>
+   <copyField source="source_name" dest="text"/>
+   <copyField source="silo" dest="text"/>
+   <copyField source="user" dest="text"/>
+   <copyField source="abstract" dest="text"/>
+   <copyField source="tags" dest="text"/>
+   <copyField source="environment" dest="text"/>
+   <copyField source="publication_date" dest="text"/>
+
    <!-- Text fields from SolrCell to search by default in our catch-all field -->
    <copyField source="title" dest="text"/>
    <copyField source="author" dest="text"/>
    <copyField source="description" dest="text"/>
    <copyField source="keywords" dest="text"/>
-   <copyField source="content" dest="text"/>
+   <copyField source="content" dest="text"/> 
    <copyField source="content_type" dest="text"/>
    <copyField source="resourcename" dest="text"/>
    <copyField source="url" dest="text"/>
